@@ -10,19 +10,23 @@ const ID = base.add(0x02CC35E8);
 const HAS_KEY = base.add(0x4912394);
 const NEWS = base.add(0x4BE1E70)
 
+const PhotonAppId = ""; //paste your photon app id here
+const PhotonVoiceAppId = ""; //paste your photon voice app id here
 
+function toast(msg) {
+    Java.perform(function () { 
+        var context = Java.use('android.app.ActivityThread').currentApplication().getApplicationContext();
+
+        Java.scheduleOnMainThread(function() {
+                var toast = Java.use("android.widget.Toast");
+                toast.makeText(Java.use("android.app.ActivityThread").currentApplication().getApplicationContext(), Java.use("java.lang.String").$new(msg), 1).show();
+            });
+    });
+}
 
 const filePath = "/data/data/com.F2Games.GBDE/files/account.txt"; //userID path
 let uniqueID = null;
-const encryptionKey = "FCKTYNILUFRB5NY789ERDNYRF57D4I8R5UYMNU";
 
-function xorEncryptDecrypt(text, key) {
-    let result = "";
-    for (let i = 0; i < text.length; i++) {
-        result += String.fromCharCode(text.charCodeAt(i) ^ key.charCodeAt(i % key.length));
-    }
-    return result;
-}
 
 function decode(strPointer) {
     const stringPtr = strPointer.add(20);
@@ -64,8 +68,8 @@ Java.perform(function () {
 
     Interceptor.attach(CONNECT_USING_SETTIINGS, {
         onEnter(args) {
-            args[0].add(0x8).writePointer(string_new(Memory.allocUtf8String(""))); //paste ur photon server appid here
-            args[0].add(0x14).writePointer(string_new(Memory.allocUtf8String(""))); //paste ur photon voice appid here
+            args[0].add(0x8).writePointer(string_new(Memory.allocUtf8String(PhotonAppId)));
+            args[0].add(0x14).writePointer(string_new(Memory.allocUtf8String(PhotonVoiceAppId))); 
 
         }
     });
@@ -90,34 +94,4 @@ Java.perform(function () {
 
 
  //toasts
-Java.perform(function () { 
-    var context = Java.use('android.app.ActivityThread').currentApplication().getApplicationContext();
-
-    Java.scheduleOnMainThread(function() {
-            var toast = Java.use("android.widget.Toast");
-            toast.makeText(Java.use("android.app.ActivityThread").currentApplication().getApplicationContext(), Java.use("java.lang.String").$new("Бета версия, могут быть баги"), 1).show();
-    });
-});
-Java.perform(function () { 
-    var context = Java.use('android.app.ActivityThread').currentApplication().getApplicationContext();
-
-    Java.scheduleOnMainThread(function() {
-            var toast = Java.use("android.widget.Toast");
-            toast.makeText(Java.use("android.app.ActivityThread").currentApplication().getApplicationContext(), Java.use("java.lang.String").$new("Beta version, there may be bugs"), 1).show();
-    });
-});
-Java.perform(function () { 
-    var context = Java.use('android.app.ActivityThread').currentApplication().getApplicationContext();
-
-    Java.scheduleOnMainThread(function() {
-            var toast = Java.use("android.widget.Toast");
-            toast.makeText(Java.use("android.app.ActivityThread").currentApplication().getApplicationContext(), Java.use("java.lang.String").$new("t.me/oldgoreboxreborn"), 1).show();
-    });
-});
-
-Interceptor.attach(NEWS, {
-    onEnter(args) {
-        args[1] = string_new(Memory.allocUtf8String("")) //replacing news, PASTE UR PASTEBIN RAW LINK WITH UR TEXT
- 
-    }
-});
+toast("github.com/memphis9339/gorebox-mod/")
