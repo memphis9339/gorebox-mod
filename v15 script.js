@@ -58,24 +58,29 @@ function saveUniqueID(id) {
 
 const idg = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => (Math.random()*16|0).toString(16)); //uuid generator
 
-Java.perform(function () {
+function main() {
     loadUniqueID();
 
     Interceptor.attach(GOREBOXMENU_START, {
-        onEnter(args) { this.btn = args[0].add(0xAC).readPointer(); }, //version validator bypass
-        onLeave(args) { setActive(this.btn, 0); }
+        onEnter(args) {
+            this.btn = args[0].add(0xAC).readPointer(); // version validator bypass
+        },
+        onLeave(args) {
+            setActive(this.btn, 0);
+        }
     });
 
     Interceptor.attach(CONNECT_USING_SETTIINGS, {
         onEnter(args) {
             args[0].add(0x8).writePointer(string_new(Memory.allocUtf8String(PhotonAppId)));
-            args[0].add(0x14).writePointer(string_new(Memory.allocUtf8String(PhotonVoiceAppId))); 
-
+            args[0].add(0x14).writePointer(string_new(Memory.allocUtf8String(PhotonVoiceAppId)));
         }
     });
 
     Interceptor.attach(ID, {
-        onEnter(args) { this.key = decode(args[0]); },
+        onEnter(args) {
+            this.key = decode(args[0]);
+        },
         onLeave(retval) {
             if (this.key === "ID") {
                 if (!uniqueID) {
@@ -88,10 +93,14 @@ Java.perform(function () {
     });
 
     Interceptor.attach(HAS_KEY, {
-        onLeave(retval) { retval.replace(1); }
+        onLeave(retval) {
+            retval.replace(1);
+        }
     });
-});
+}
 
 
  //toasts
-toast("github.com/memphis9339/gorebox-mod/")
+toast("github.com/memphis9339/gorebox-mod/");
+
+main();
