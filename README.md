@@ -1,3 +1,2 @@
-# gorebox-mod
-GoreBox multiplayer mod (frida script) for 15.10.2 version, arm32
-without anticheat
+# GoreBox-mod
+Для запуска пропатчите апк игры frida-gadget'ом, и поменяйте PhotonAppId в константе скрипта
